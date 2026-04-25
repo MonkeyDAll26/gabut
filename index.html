@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suke Suke</title>
+    <style>
+        body {
+            margin: 0; padding: 0; min-height: 100vh; width: 100%;
+            background: linear-gradient(to bottom, #ffc0cb, #ffffff);
+            display: flex; 
+            justify-content: space-between; 
+            align-items: flex-start;
+            font-family: 'Segoe UI', Arial, sans-serif; 
+            overflow-x: hidden; 
+            padding: 20px 80px; 
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+        .sisi-video { display: flex; flex-direction: column; gap: 25px; width: 170px; margin-top: 30px; }
+        .lirik-center { text-align: center; flex: 1; margin-top: 30px; display: flex; flex-direction: column; align-items: center; }
+        h1 { color: #ff9acd; margin: 0; font-size: 2rem; text-shadow: 2px 2px 5px rgba(0,0,0,0.1); }
+        .judul-lagu { font-size: 1.2rem; font-weight: bold; color: #333; margin-bottom: 20px; }
+        #video-utama-container {
+            display: none; 
+            width: 100%;
+            max-width: 320px;
+            margin-bottom: 20px;
+            border: 5px solid #ff9acd;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        #lirik-container {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #444;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-shadow: 1px 1px 3px rgba(255,255,255,0.8);
+            transition: all 0.4s ease;
+            padding: 0 10px;
+        }
+        #tombolPlay {
+            display: inline-block; padding: 12px 30px; background-color: #ff9acd;
+            color: white; font-weight: bold; border-radius: 50px; cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2); margin-top: 10px;
+            transition: 0.3s;
+        }
+        .joget { width: 100%; max-height: 180px; object-fit: cover; border-radius: 15px; box-shadow: 0 8px 15px rgba(0,0,0,0.15); }
+        .video-main { width: 100%; display: block; }
+        .posisi-1 { transform: rotate(-7deg); }
+        .posisi-2 { transform: rotate(5deg); }
+        .posisi-3 { transform: rotate(8deg); }
+        .posisi-4 { transform: rotate(-10deg); }
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+                align-items: center;
+                padding: 20px;
+                justify-content: flex-start;
+                overflow-y: auto;
+            }
+            .sisi-video {
+                flex-direction: row;
+                width: 100%;
+                justify-content: center;
+                gap: 15px;
+                margin-top: 10px;
+                order: 2;
+            }
+            .sisi-video:last-of-type { order: 3; }
+            .lirik-center {
+                order: 1;
+                width: 100%;
+                margin-top: 10px;
+            }
+            .sisi-video .super-container { width: 45%; }
+            h1 { font-size: 1.5rem; }
+            #lirik-container { font-size: 1.4rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="sisi-video">
+        <div class="super-container posisi-1"><video class="joget" autoplay loop muted playsinline><source src="anim.mp4" type="video/mp4"></video></div>
+        <div class="super-container posisi-2"><video class="joget" autoplay loop muted playsinline><source src="bahlil.mp4" type="video/mp4"></video></div>
+    </div>
+    <div class="lirik-center">
+        <h1>Gabut</h1>
+        <p class="judul-lagu">Sad Gril.</p>
+        <div id="video-utama-container">
+            <video id="vidMain" class="video-main" loop muted playsinline>
+                <source src="apa.mp4" type="video/mp4">
+            </video>
+        </div>
+        <div id="lirik-container">Apepun Pakai</div>
+        <div id="tombolPlay">Klik Disini 🎵</div>
+    </div>
+    <div class="sisi-video">
+        <div class="super-container posisi-3"><video class="joget" autoplay loop muted playsinline><source src="nasir.mp4" type="video/mp4"></video></div>
+        <div class="super-container posisi-4"><video class="joget" autoplay loop muted playsinline><source src="powerrenger.mp4" type="video/mp4"></video></div>
+    </div>
+    <audio id="myAudio" loop><source src="apakah.mp3" type="audio/mpeg"></audio>
+    <script>
+        const btn = document.getElementById('tombolPlay');
+        const audio = document.getElementById('myAudio');
+        const videoUtamaCont = document.getElementById('video-utama-container');
+        const vidMain = document.getElementById('vidMain');
+        const lirikBox = document.getElementById('lirik-container');
+        const dataLirik = [
+            { waktu: 0, teks: "" }
+        ];
+        btn.addEventListener('click', () => {
+            audio.play().then(() => {
+                btn.style.display = 'none'; 
+                videoUtamaCont.style.display = 'block'; 
+                vidMain.play(); 
+            }).catch(err => {
+                alert("Cek file lagu/video Tuan Muda!");
+            });
+        });
+        audio.addEventListener('timeupdate', () => {
+            const current = audio.currentTime;
+            const lirikSkrg = dataLirik.filter(item => current >= item.waktu).pop();
+            if (lirikSkrg && lirikBox.innerText !== lirikSkrg.teks) {
+                lirikBox.innerText = lirikSkrg.teks;
+            }
+        });
+    </script>
+</body>
+</html>
